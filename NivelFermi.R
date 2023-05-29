@@ -33,7 +33,7 @@ e0 = c(0.121, 0.461, 0.950)*1.6022e-19
 W = (c(0.020, 0.099, 0.290)*1.6022e-19)/2
 
 #Creamos un vector de valores para la E_F (afinar posteriormente)
-EF = seq(0,0.3,len=2000)*1.6022e-19
+EF = seq(0,0.5,len=2000)*1.6022e-19
 
 #Definimos la función a integrar
 intFermi = function(x,EF,e0,W) 1/(2*pi)*log(1 + exp(beta*(EF-e0+W*cos(x))))
@@ -52,11 +52,11 @@ n_est = function(EF) {
 result = Inf
 ref = 0
 for(k in 1:length(EF)) {
- if(abs(n - n_est(EF[k]))<result) {
-   result = abs(n - n_est(EF[k]))
-   ref = EF[k]
-   print(abs(n - n_est(EF[k])))
- }
+  if(abs(n - n_est(EF[k]))<result) {
+    result = abs(n - n_est(EF[k]))
+    ref = EF[k]
+    print(abs(n - n_est(EF[k])))
+  }
 }
 
 #Nuestra estimación para la EF (expresada en eV sobre el pozo del potencial):
@@ -64,3 +64,6 @@ EF_estimada = ref/(1.602e-19)
 
 #Calculamos el error relativo cometido por nuestra EF estimada: (n - n_estimado)/n*100
 error = result/n*100
+
+#Eliminamos todas las variables de la memoria excepto las útiles
+rm(list=setdiff(ls(), c("EF_estimada","error")))
